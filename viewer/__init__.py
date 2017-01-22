@@ -1,61 +1,96 @@
-from fman import DirectoryPaneCommand, show_alert, show_status_message
+from fman import DirectoryPaneCommand
 import os
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-class ViewerWindow(QWidget):
-    def __init__(self, parent=None):
-        super(ViewerWindow, self).__init__(parent)
 
-    def keyPressEvent(self, e):
-        if e.key() == Qt.Key_Escape:
-            self.close()
+class TextViewer(QPlainTextEdit):
+    def __init__(self, file_name, parent=None):
+        super(TextViewer, self).__init__(parent)
 
-class ViewFile(DirectoryPaneCommand):
-    def __call__(self):
-        file_name = self.pane.get_file_under_cursor()
-
-        # TODO: check if it is file or directory
-
-        text_edit = QPlainTextEdit()
         # disable text editing
-        text_edit.setReadOnly(True)
+        self.setReadOnly(True)
 
         # set background color
         palette = QPalette()
         bgcolor = QColor(39, 40, 34)
         palette.setColor(QPalette.Base, bgcolor)
-        #textc = QColor(255, 255, 255)
-        #pal.setColor(QPalette.Text, textc)
-        text_edit.setPalette(palette)
+        # textc = QColor(255, 255, 255)
+        # pal.setColor(QPalette.Text, textc)
+        self.setPalette(palette)
 
         # set monospace font
         font = QFont('Monospace')
         font.setStyleHint(QFont.TypeWriter)
-        text_edit.setFont(font)
+        self.setFont(font)
 
         # load text file into viewer
         file = QFile(file_name)
         file.open(QFile.ReadOnly)
         text = file.readAll()
-        text = str(text, encoding='utf8')
-        text_edit.setPlainText(text)
+        # if text is not unicode, display it as latin1
+        try:
+            text = str(text, encoding='utf8')
+        except:
+            text = str(text, 'latin1')
+        self.setPlainText(text)
+        self.setFocus()
 
-        global window # FIXME: keep reference to window in app scope
 
-        window = ViewerWindow()
-        window.resize(640, 480)
-        #window.move(300, 300)
-        window.setWindowTitle('Viewer - [' + file_name + ']')
+class ImageViewer(QScrollArea):
+    def __init__(self, parent=None):
+        super(ImageViewer, self).__init__(parent)
 
-        # add text_edit to qwidget
-        window.layout = QVBoxLayout(window)
-        window.layout.setContentsMargins(0, 0, 0, 0)
-        window.layout.addWidget(text_edit)
+    def loadImage(self, file_name):
+        image_label = QLabel()
+        image = QPixmap(file_name)
+
+        if image.isNull():
+            return False
+
+        image_label.setPixmap(image)
+        self.setWidget(image_label)
+
+        return True
+
+
+class ViewerWindow(QWidget):
+    def __init__(self, file_name, parent=None):
+        super(ViewerWindow, self).__init__(parent)
+
+        self.resize(640, 480)
+        # window.move(300, 300)
+        self.setWindowTitle('Viewer - [' + file_name + ']')
+
+        # try to display image
+        viewer = ImageViewer(self)
+        result = viewer.loadImage(file_name)
+        if not result:
+            viewer = TextViewer(file_name, self)
+
+        # add viewer to qwidget
+        self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.addWidget(viewer)
+
+        self.show()
+
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key_Escape:
+            self.close()
+
+
+class ViewFile(DirectoryPaneCommand):
+    def __call__(self):
+        file_name = self.pane.get_file_under_cursor()
+
+        # FIXME: how to correctly instantiate multiple windows and keep reference?
+        # TODO: use thread to prevent main process from freeze while opening big files
+
+        if not os.path.isdir(file_name):
+            self.window = ViewerWindow(file_name)
 
         # TODO: display status bar with file type, encoding, length, end line type, wrapping mode
-        #status_bar = QStatusBar()
-        #window.layout.addWidget(status_bar)
-
-        window.show()
+        # status_bar = QStatusBar()
+        # window.layout.addWidget(status_bar)
