@@ -1,4 +1,4 @@
-from fman import DirectoryPaneCommand, show_alert
+from fman import DirectoryPaneCommand
 import os
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -14,10 +14,10 @@ class TextViewer(QPlainTextEdit):
 
         # set background color
         palette = QPalette()
-        bgcolor = QColor(39, 40, 34)
-        palette.setColor(QPalette.Base, bgcolor)
-        # textc = QColor(255, 255, 255)
-        # pal.setColor(QPalette.Text, textc)
+        bg_color = QColor(39, 40, 34)
+        palette.setColor(QPalette.Base, bg_color)
+        text_color = QColor(200, 200, 200)
+        palette.setColor(QPalette.Text, text_color)
         self.setPalette(palette)
 
         # set monospace font
