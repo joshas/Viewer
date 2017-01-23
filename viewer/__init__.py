@@ -1,4 +1,4 @@
-from fman import DirectoryPaneCommand
+from fman import DirectoryPaneCommand, show_alert
 import os
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -37,6 +37,15 @@ class TextViewer(QPlainTextEdit):
             text = str(text, 'latin1')
         self.setPlainText(text)
         self.setFocus()
+
+    def keyPressEvent(self, e):
+        # toggle line wrapping mode
+        if e.key() == Qt.Key_W:
+            if self.lineWrapMode() == QPlainTextEdit.NoWrap:
+                self.setLineWrapMode(self.WidgetWidth)
+            else:
+                self.setLineWrapMode(self.NoWrap)
+        super(TextViewer, self).keyPressEvent(e)
 
 
 class ImageViewer(QScrollArea):

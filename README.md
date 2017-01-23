@@ -9,7 +9,10 @@ and modify it however you want. Just be aware that current implementation has so
 - opening big files will freeze fman and eat all your RAM
 
 ## Usage
+### In fman main view
 * <kbd>F3</kbd> - view single file under cursor
+### In viewer window
+* <kbd>W</kbd> - toggle word wrapping
 
 ## Installation
 Download and extract it to fman Plugins directory. Restart fman.
