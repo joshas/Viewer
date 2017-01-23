@@ -86,7 +86,16 @@ class ViewFile(DirectoryPaneCommand):
     def __call__(self):
         file_name = self.pane.get_file_under_cursor()
 
+        # check if selected item is not a directory
         if not os.path.isdir(file_name):
+            # display a warning before opening big file (larger than 100MB)
+            file_size = os.path.getsize(file_name)
+            if file_size > (1024 * 1024 * 100):
+                warn_msg = "The file you are about to open is large. Do you really want to open it?"
+                reply = QMessageBox.information(None, 'Warning', warn_msg, QMessageBox.Yes, QMessageBox.No)
+                if reply == QMessageBox.No:
+                    return
+
             # FIXME: how and where to keep references to open windows?
             if not hasattr(self, 'viewer_window'):
                 self.viewer_window = []
