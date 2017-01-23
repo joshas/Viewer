@@ -11,6 +11,7 @@ and modify it however you want. Just be aware that current implementation has so
 ## Usage
 ### In fman main view
 * <kbd>F3</kbd> - view single file under cursor
+
 ### In viewer window
 * <kbd>W</kbd> - toggle word wrapping
 
