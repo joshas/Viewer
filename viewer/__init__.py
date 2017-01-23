@@ -26,6 +26,7 @@ class TextViewer(QPlainTextEdit):
         self.setFont(font)
 
         # load text file into viewer
+        # TODO: use thread to prevent main process from freeze while opening big files
         file = QFile(file_name)
         file.open(QFile.ReadOnly)
         text = file.readAll()
@@ -85,12 +86,8 @@ class ViewFile(DirectoryPaneCommand):
     def __call__(self):
         file_name = self.pane.get_file_under_cursor()
 
-        # FIXME: how to correctly instantiate multiple windows and keep reference?
-        # TODO: use thread to prevent main process from freeze while opening big files
-
         if not os.path.isdir(file_name):
-            self.window = ViewerWindow(file_name)
-
-        # TODO: display status bar with file type, encoding, length, end line type, wrapping mode
-        # status_bar = QStatusBar()
-        # window.layout.addWidget(status_bar)
+            # FIXME: how and where to keep references to open windows?
+            if not hasattr(self, 'viewer_window'):
+                self.viewer_window = []
+            self.viewer_window.append(ViewerWindow(file_name))
