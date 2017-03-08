@@ -21,8 +21,7 @@ class TextViewer(QPlainTextEdit):
         self.setPalette(palette)
 
         # set monospace font
-        font = QFont('Monospace')
-        font.setStyleHint(QFont.TypeWriter)
+        font = QFontDatabase.systemFont(QFontDatabase.FixedFont)
         self.setFont(font)
 
         # load text file into viewer
