@@ -5,7 +5,6 @@ Currently this plugin is in an experimental state, so please do not send pull re
 and modify it however you want. Just be aware that current implementation has some major issues.
 
 ## Issues
-- closing main app does not close Viewer window
 - opening big files will freeze fman and eat all your RAM
 
 ## Usage
