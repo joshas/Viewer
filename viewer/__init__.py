@@ -26,6 +26,7 @@ class TextViewer(QPlainTextEdit):
         # set monospace font
         font = QFontDatabase.systemFont(QFontDatabase.FixedFont)
         self.setFont(font)
+        self.isFontMonospace = True
 
         # set tab size to 4 spaces
         metrics = QFontMetrics(font)
@@ -50,6 +51,16 @@ class TextViewer(QPlainTextEdit):
                 self.setLineWrapMode(self.WidgetWidth)
             else:
                 self.setLineWrapMode(self.NoWrap)
+        # toggle variable/fixed font
+        if e.key() == Qt.Key_V:
+            if self.isFontMonospace:
+                font = QFontDatabase.systemFont(QFontDatabase.GeneralFont)
+                self.isFontMonospace = False
+            else:
+                font = QFontDatabase.systemFont(QFontDatabase.FixedFont)
+                self.isFontMonospace = True
+            self.setFont(font)
+
         super(TextViewer, self).keyPressEvent(e)
 
 

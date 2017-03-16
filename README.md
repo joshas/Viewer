@@ -14,6 +14,7 @@ audio/video players, syntax highlighters or HTML renderer - you can fork the cod
 * <kbd>F3</kbd> - view single file under cursor
 
 ### In viewer window
+* <kbd>V</kbd> - toggle fixed/variable font
 * <kbd>W</kbd> - toggle word wrapping
 
 ## Installation
