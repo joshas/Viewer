@@ -24,6 +24,10 @@ class TextViewer(QPlainTextEdit):
         font = QFontDatabase.systemFont(QFontDatabase.FixedFont)
         self.setFont(font)
 
+        # set tab size to 4 spaces
+        metrics = QFontMetrics(font)
+        self.setTabStopWidth(4 * metrics.width(' '))
+
         # load text file into viewer
         # TODO: use thread to prevent main process from freeze while opening big files
         file = QFile(file_name)
