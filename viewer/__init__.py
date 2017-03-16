@@ -32,7 +32,6 @@ class TextViewer(QPlainTextEdit):
         self.setTabStopWidth(4 * metrics.width(' '))
 
         # load text file into viewer
-        # TODO: use thread to prevent main process from freeze while opening big files
         file = QFile(file_name)
         file.open(QFile.ReadOnly)
         text = file.readAll()
@@ -113,7 +112,7 @@ class ViewFile(DirectoryPaneCommand):
                 if reply == QMessageBox.No:
                     return
 
-            # FIXME: how and where to keep references to open windows?
+            # store windows in a list
             if not hasattr(self, 'viewer_window'):
                 self.viewer_window = []
             self.viewer_window.append(ViewerWindow(file_name))

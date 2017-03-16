@@ -1,11 +1,13 @@
 # Viewer
 [fman](https://fman.io) plugin for viewing files and images.
 
-Currently this plugin is in an experimental state, so please do not send pull requests. Of course you can fork the code
-and modify it however you want. Just be aware that current implementation has some major issues.
+This plugin is meant to be as simple as possible with minimal feature set. If you want add advanced features, like
+audio/video players, syntax highlighters or HTML renderer - you can fork the code and modify it however you want.
 
-## Issues
-- opening big files will freeze fman and eat all your RAM
+## Issues (help needed)
+- better window management - currently windows are stored in list and not removed on close
+- use threads to prevent main process from freezing, while opening big files
+- read and display big files in smaller chunks
 
 ## Usage
 ### In fman main view
