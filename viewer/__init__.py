@@ -9,6 +9,9 @@ class TextViewer(QPlainTextEdit):
     def __init__(self, file_name, parent=None):
         super(TextViewer, self).__init__(parent)
 
+        # delete this widget when the widget has accepted the close event
+        self.setAttribute(Qt.WA_DeleteOnClose)
+
         # disable text editing
         self.setReadOnly(True)
 
@@ -91,6 +94,8 @@ class ViewerWindow(QWidget):
 
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:
+            if self.isFullScreen():
+                self.showNormal()
             self.close()
 
 
