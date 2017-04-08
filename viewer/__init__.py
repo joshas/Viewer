@@ -1,4 +1,5 @@
 from fman import DirectoryPaneCommand
+from fman.util.qt import run_in_main_thread
 import os
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -110,6 +111,7 @@ class ViewerWindow(QWidget):
 
 
 class ViewFile(DirectoryPaneCommand):
+    @run_in_main_thread
     def __call__(self):
         file_name = self.pane.get_file_under_cursor()
 
