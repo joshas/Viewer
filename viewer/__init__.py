@@ -4,7 +4,7 @@ from fman import DirectoryPaneCommand, show_alert
 # noinspection PyUnresolvedReferences
 from fman.url import as_human_readable, splitscheme
 # noinspection PyUnresolvedReferences
-from fman.impl.util.qt import run_in_main_thread
+from fman.impl.util.qt.thread import run_in_main_thread
 from PyQt5.QtWidgets import *
 from viewer.viewer_window import ViewerWindow
 
